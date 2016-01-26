@@ -32,7 +32,8 @@ Labyrinth::Labyrinth():
 	pillSurface(NULL),
 	bgSurface(NULL),
 	levelNumber(NULL),
-	level(1){
+	level(1),
+	cnt_pills(0){
 	// horizontal rails, row by row, from left to right
 	s0  = new Rail(138,  37, 207,  37);
 	s1  = new Rail(207,  37, 290,  37);
@@ -385,6 +386,25 @@ void Labyrinth::removePill(int idxPill) {
 			SDL_BlitSurface(bgSurface, &dest, pillSurface, &dest);
 		}
 		--cnt_pills;
+		int pill_limit = -1;
+		switch(level) {
+			case 1:
+				break;
+			case 2:
+			case 3:
+				pill_limit = 5;
+				break;
+			case 4:
+			case 5:
+				pill_limit = 10;
+				break;
+			default:
+				pill_limit = 15;
+		}
+		if(cnt_pills == pill_limit) {
+			for(unsigned int i = 0; i < vec_observer.size(); i++)
+				vec_observer.at(i)->setPanicMode(true);
+		}
 	}
 }
 
@@ -449,6 +469,8 @@ void Labyrinth::resetLevel(int level) {
 	drawLevelNumber();
 	Screen::getInstance()->addTotalUpdateRect();
 	Screen::getInstance()->Refresh();
+	for(unsigned int i = 0; i < vec_observer.size(); i++)
+		vec_observer.at(i)->setPanicMode(false);
 }
 
 void Labyrinth::loadLevelFruit() {
@@ -608,4 +630,8 @@ SDL_Surface *Labyrinth::getBackground() {
 		bgSurface = Screen::loadImage("gfx/hintergrund2.png");
 	}
 	return bgSurface;
+}
+
+void Labyrinth::setLabyrinthObserver(LabyrinthObserver* labyrinthObserver) {
+	this->vec_observer.push_back(labyrinthObserver);
 }
