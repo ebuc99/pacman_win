@@ -211,5 +211,8 @@ Mix_Music *Sounds::loadWaveMusic(const char *filename) {
 
 void Sounds::setPanicMode(int set) {
 	panicMode = set;
-	musicPlaying = NONE;
+	if(panicMode) {
+		musicPlaying = NONE;
+		playNormalMusic();
+	}
 }
