@@ -130,12 +130,12 @@ bool Game::eventloop() {
 		case SDL_QUIT:
 			return false;
 		}
-	}
-	// Redraw, when overlapped by foreign window
-	if(event.window.event == SDL_WINDOWEVENT_EXPOSED ||
-	   event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
-		Screen::getInstance()->addTotalUpdateRect();
-		Screen::getInstance()->Refresh();
+		// Redraw, when overlapped by foreign window
+		if(event.window.event == SDL_WINDOWEVENT_EXPOSED ||
+		   event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
+			Screen::getInstance()->addTotalUpdateRect();
+			Screen::getInstance()->Refresh();
+		}
 	}
 	return true;
 }
@@ -156,12 +156,17 @@ void Game::setGameOver(bool gameOver) {
 		stop(true);
 		Labyrinth::getInstance()->setInitText("Game over", Constants::RED);
 	}
+	HighscoreList::getInstance()->load();
+	if (!HighscoreList::getInstance()->isReadonly()) {
+		HighscoreList::getInstance()->insertEntry(new HighscoreEntry(CommandLineOptions::getValue("","name"), Labyrinth::getInstance()->getScore(), Labyrinth::getInstance()->getLevelNumber()));
+		//HighscoreList::getInstance()->print();  // for testing purposes
+	}
 }
 
 void Game::startHuntingMode() {
 	Labyrinth::getInstance()->resetBonusStage();
 	if (cnt_hunting_mode < 0)
-		cnt_hunting_mode = Level::getInstance()->getHuntingModeTime(); 
+		cnt_hunting_mode = Level::getInstance()->getHuntingModeTime();
 	else // hunting mode was still active - prolong the it's duration
 		cnt_hunting_mode += Level::getInstance()->getHuntingModeTime();
 	checkMusic();
@@ -388,4 +393,8 @@ void Game::checkMusic() {
 			Sounds::getInstance()->playNormalMusic();
 		}
 	}
+}
+
+bool Game::isGameOver() {
+	return gameOver;
 }

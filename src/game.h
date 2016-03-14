@@ -6,6 +6,7 @@
 #include "constants.h"
 #include "pacman_figur.h"
 #include "ghost_figur.h"
+#include "highscore.h"
 
 class Game {
 	public:
@@ -16,6 +17,7 @@ class Game {
 		void checkMusic();
 		void startHuntingMode();
 		void sleep(int ms);  // sleep for a short time - should be used after a ghost or a fruit has been eaten (display score, sleep shortly, remove score)
+		bool isGameOver();
 
 	private:
 		Game();
