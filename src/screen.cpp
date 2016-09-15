@@ -45,7 +45,8 @@ void Screen::cleanUpInstance() {
 Screen::Screen():
 	sdlInitErrorOccured(false),
 	fullscreen(CommandLineOptions::exists("f","fullscreen")),
-	rect_num(0)
+	rect_num(0),
+	scalingFactor(1)
 {
 	// initialize SDL
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
@@ -62,8 +63,9 @@ Screen::Screen():
                                   SDL_WINDOWPOS_UNDEFINED,
                            		  Constants::WINDOW_WIDTH,
                            		  Constants::WINDOW_HEIGHT,
-                           		  fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
+                           		  fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
 		screen_surface = SDL_GetWindowSurface(window);
+		computeClipRect();
 		if(screen_surface == 0) {
 			printf("Setting video mode failed: %s\n",SDL_GetError());
 			sdlInitErrorOccured = true;
@@ -88,22 +90,29 @@ void Screen::AddUpdateRects(int x, int y, int w, int h) {
 		h += y;
 		y = 0;
 	}
-	if (x + w > screen_surface->w)
-		w = screen_surface->w - x;
-	if (y + h > screen_surface->h)
-		h = screen_surface->h - y;
+	if (x + w > clipRect.w)
+		w = clipRect.w - x;
+	if (y + h > clipRect.h)
+		h = clipRect.h - y;
 	if (w <= 0 || h <= 0)
 		return;
-	rects[rect_num].x = (short int) x;
-	rects[rect_num].y = (short int) y;
-	rects[rect_num].w = (short int) w;
-	rects[rect_num].h = (short int) h;
+	rects[rect_num].x = (short int) x*scalingFactor + clipRect.x;
+	rects[rect_num].y = (short int) y*scalingFactor + clipRect.y;
+	rects[rect_num].w = (short int) w * scalingFactor;
+	rects[rect_num].h = (short int) h * scalingFactor;
 	rect_num++;
 }
 
 void Screen::addTotalUpdateRect() {
-	rect_num = 0;  // all other update rects will be included in this one
-	AddUpdateRects(0, 0, screen_surface->w, screen_surface->h);
+	rects[0].x = 0;
+	rects[0].y = 0;
+	rects[0].w = screen_surface->w;  // no scalingFactor as screen_surface already is the total screen surface
+	rects[0].h = screen_surface->h;
+	rect_num = 1;  // all other update rects will be included in this one
+}
+
+void Screen::addUpdateClipRect() {
+	AddUpdateRects(0, 0, Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT);
 }
 
 void Screen::Refresh() {
@@ -113,24 +122,32 @@ void Screen::Refresh() {
 
 void Screen::draw_dynamic_content(SDL_Surface *surface, int x, int y) {
 	SDL_Rect dest;
-	dest.x = (short int)x;
-	dest.y = (short int)y;
-	dest.w = (short int)surface->w;
-	dest.h = (short int)surface->h;
-	SDL_BlitSurface(surface, NULL, this->screen_surface, &dest);
-	this->AddUpdateRects(dest.x, dest.y, surface->w + 10, surface->h);
+	dest.x = (short int) x*scalingFactor + clipRect.x;
+	dest.y = (short int) y*scalingFactor + clipRect.y;
+	dest.w = (short int) surface->w * scalingFactor;
+	dest.h = (short int) surface->h * scalingFactor;
+	if (scalingFactor > 1) {
+		SDL_BlitScaled(surface, NULL, screen_surface, &dest);
+	} else {
+		SDL_BlitSurface(surface, NULL, screen_surface, &dest);
+	}
+	AddUpdateRects(x, y, surface->w + 10, surface->h);
 }
 
 void Screen::draw(SDL_Surface* graphic, int offset_x, int offset_y) {
-    if (0 == offset_x && 0 == offset_y) {
+    if (0 == offset_x && 0 == offset_y && 0 == clipRect.x && 0 == clipRect.y && scalingFactor == 1) {
         SDL_BlitSurface(graphic, NULL, screen_surface, NULL);
     } else {
         SDL_Rect position;
-        position.x = (short int)offset_x;
-        position.y = (short int)offset_y;
-		position.w = (short int)graphic->w;
-		position.h = (short int)graphic->h;
-        SDL_BlitSurface(graphic, NULL, screen_surface, &position);
+        position.x = (short int) offset_x*scalingFactor + clipRect.x;
+        position.y = (short int) offset_y*scalingFactor + clipRect.y;
+		position.w = (short int) graphic->w * scalingFactor;
+		position.h = (short int) graphic->h * scalingFactor;
+		if (scalingFactor > 1) {
+			SDL_BlitScaled(graphic, NULL, screen_surface, &position);
+		} else {
+			SDL_BlitSurface(graphic, NULL, screen_surface, &position);
+		}
     }
 }
 
@@ -140,7 +157,7 @@ void Screen::setFullscreen(bool fs) {
 	SDL_SetWindowSize(window, Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT);
 	SDL_SetWindowPosition(window, 0, 0);
     if(fs)
-		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 	else
 		SDL_SetWindowFullscreen(window, 0);
 	SDL_SetWindowSize(window, Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT);
@@ -148,7 +165,9 @@ void Screen::setFullscreen(bool fs) {
 	SDL_Surface* newScreen = SDL_GetWindowSurface(window);
 	if(newScreen) {
 		screen_surface = newScreen;
-		AddUpdateRects(0, 0, screen_surface->w, screen_surface->h);
+		computeClipRect();
+		clearOutsideClipRect();
+		addTotalUpdateRect();
 		fullscreen = fs;
 	} else {
 		if (fs) {
@@ -157,59 +176,6 @@ void Screen::setFullscreen(bool fs) {
 			printf("Switching from fullscreen mode failed: %s\n",SDL_GetError());
 		}
 	}
-}
-
-void Screen::drawHorizontalLine(int x1, int x2, int y, Uint8 r, Uint8 g, Uint8 b) {
-	if (SDL_MUSTLOCK(this->screen_surface))
-		SDL_LockSurface(this->screen_surface);
-	Uint8* p;
-	for (int i = x1; i <= x2; ++i) {
-		p = (Uint8*) this->screen_surface->pixels + (y * this->screen_surface->pitch) + (i * sizeof(Uint8) * 3);
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-		p[0] = r; p[1] = g; p[2] = b;
-#else
-		p[0] = b; p[1] = g; p[2] = r;
-#endif
-	}
-	if (SDL_MUSTLOCK(this->screen_surface))
-		SDL_UnlockSurface(this->screen_surface);
-}
-
-void Screen::drawVerticalLine(int x, int y1, int y2, Uint8 r, Uint8 g, Uint8 b) {
-	if (SDL_MUSTLOCK(this->screen_surface))
-		SDL_LockSurface(this->screen_surface);
-	Uint8* p;
-	for (int i = y1; i <= y2; ++i) {
-		p = (Uint8*) this->screen_surface->pixels + (i * this->screen_surface->pitch) + (x * sizeof(Uint8) * 3);
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-		p[0] = r; p[1] = g; p[2] = b;
-#else
-		p[0] = b; p[1] = g; p[2] = r;
-#endif
-	}
-	if (SDL_MUSTLOCK(this->screen_surface))
-		SDL_UnlockSurface(this->screen_surface);
-}
-
-// deprecated
-SDL_Surface *Screen::LoadSurface(const char *filename, int transparent_color) {
-	// deprecated
-	std::cerr << "Screen::LoadSurface is deprecated! Please use Screen::loadImage instead and provide a relative Path there." << std::endl;
-	SDL_Surface *surface, *temp;
-	temp = IMG_Load(filename);
-	if(!temp) {
-		printf("Unable to load image: %s\n", IMG_GetError());
-		exit(-1);
-	}
-	if(transparent_color != -1)
-		SDL_SetColorKey(temp, SDL_TRUE | SDL_RLEACCEL, (Uint32)SDL_MapRGB(temp->format, (uint8_t)transparent_color, (uint8_t)transparent_color, (uint8_t)transparent_color));
-	surface = SDL_ConvertSurface(temp, temp->format, 0);
-	if(surface == NULL) {
-		printf("Unable to convert image to display format: %s\n", SDL_GetError());
-                exit(EXIT_FAILURE);
-        }
-    SDL_FreeSurface(temp);
-    return surface;
 }
 
 SDL_Surface *Screen::loadImage(const char *filename, int transparentColor) {
@@ -244,21 +210,68 @@ TTF_Font *Screen::loadFont(const char *filename, int ptSize) {
 }
 
 SDL_Surface *Screen::getTextSurface(TTF_Font *font, const char *text, SDL_Color color) {
-	SDL_Surface *surface = TTF_RenderText_Solid(font, text, color);
-	if (!surface) {
+	SDL_Surface *temp = TTF_RenderText_Solid(font, text, color);
+	if (!temp) {
 		printf("Unable to render text \"%s\": %s\n", text, TTF_GetError());
 		exit(EXIT_FAILURE);
 	}
+	SDL_Surface *surface = SDL_ConvertSurface(temp,  Screen::getInstance()->getSurface()->format, 0);
+	if (surface == NULL) {
+		printf("Unable to convert text surface to display format: %s\n", SDL_GetError());
+		exit(EXIT_FAILURE);
+	}
+	SDL_FreeSurface(temp);
 	return surface;
 }
 
 void Screen::clear() {
-	SDL_Rect rect = {0, 0, screen_surface->w, screen_surface->h};
-	fillRect(&rect, 0, 0, 0);
+	SDL_Rect rect = {0, 0, screen_surface->w * scalingFactor, screen_surface->h * scalingFactor};
+	SDL_FillRect(screen_surface, &rect, SDL_MapRGB(screen_surface->format, 0, 0, 0));
+}
+
+void Screen::clearOutsideClipRect() {
+	SDL_Rect rect;
+	if (clipRect.x > 0) {
+		rect.x = 0;
+		rect.y = 0;
+		rect.w = clipRect.x;
+		rect.h = screen_surface->h;
+		SDL_FillRect(screen_surface, &rect, SDL_MapRGB(screen_surface->format, 0, 0, 0));
+	}
+	if (clipRect.x + clipRect.w*scalingFactor < screen_surface->w) {
+		rect.x = clipRect.x + clipRect.w*scalingFactor;
+		rect.y = 0;
+		rect.w = screen_surface->w - rect.x;
+		rect.h = screen_surface->h;
+		SDL_FillRect(screen_surface, &rect, SDL_MapRGB(screen_surface->format, 0, 0, 0));
+	}
+	if (clipRect.y > 0) {
+		rect.x = clipRect.x;
+		rect.y = 0;
+		rect.w = clipRect.w*scalingFactor;
+		rect.h = clipRect.y;
+		SDL_FillRect(screen_surface, &rect, SDL_MapRGB(screen_surface->format, 0, 0, 0));
+	}
+	if (clipRect.y + clipRect.h*scalingFactor < screen_surface->h) {
+		rect.x = clipRect.x;
+		rect.y = clipRect.y + clipRect.h*scalingFactor;
+		rect.w = clipRect.w*scalingFactor;
+		rect.h = screen_surface->h - rect.y;
+		SDL_FillRect(screen_surface, &rect, SDL_MapRGB(screen_surface->format, 0, 0, 0));
+	}
 }
 
 void Screen::fillRect(SDL_Rect *rect, Uint8 r, Uint8 g, Uint8 b) {
-	SDL_FillRect(screen_surface, rect, SDL_MapRGB(screen_surface->format, r, g, b));
+	if (0 == clipRect.x && 0 == clipRect.y && scalingFactor == 1) {
+		SDL_FillRect(screen_surface, rect, SDL_MapRGB(screen_surface->format, r, g, b));
+	} else {
+		SDL_Rect rect_moved;
+		rect_moved.x = rect->x * scalingFactor + clipRect.x;
+		rect_moved.y = rect->y * scalingFactor + clipRect.y;
+		rect_moved.w = rect->w * scalingFactor;
+		rect_moved.h = rect->h * scalingFactor;
+		SDL_FillRect(screen_surface, &rect_moved, SDL_MapRGB(screen_surface->format, r, g, b));
+	}
 }
 
 TTF_Font *Screen::getSmallFont() {
@@ -285,4 +298,45 @@ TTF_Font *Screen::getHugeFont() {
 	if (!hugeFont)
 		hugeFont = loadFont("fonts/Cheapmot.TTF", 96);
 	return hugeFont;
+}
+
+void Screen::computeClipRect() {
+	bool scaling_allowed = !CommandLineOptions::exists("","noscaling");
+	bool centering_allowed = !CommandLineOptions::exists("","nocentering");
+	if (screen_surface->w == Constants::WINDOW_WIDTH || !centering_allowed) {
+		clipRect.x = 0;
+	} else {
+		clipRect.x = (screen_surface->w - Constants::WINDOW_WIDTH) >> 1;
+		if (clipRect.x < 0)
+			clipRect.x = 0;
+	}
+	clipRect.w = Constants::WINDOW_WIDTH;
+	if (screen_surface->h == Constants::WINDOW_HEIGHT || !centering_allowed) {
+		clipRect.y = 0;
+	} else {
+		clipRect.y = (screen_surface->h - Constants::WINDOW_HEIGHT) >> 1;
+		if (clipRect.y < 0)
+			clipRect.y = 0;
+	}
+	clipRect.h = Constants::WINDOW_HEIGHT;
+	if (scaling_allowed) {
+		int scalingX = screen_surface->w / clipRect.w;
+		int scalingY = screen_surface->h / clipRect.h;
+		scalingFactor = scalingX < scalingY ? scalingX : scalingY;
+		if (scalingFactor < 1) {
+			scalingFactor = 1;
+		}
+		if (scalingFactor >= 2 && centering_allowed) {
+			clipRect.x = (screen_surface->w - clipRect.w * scalingFactor) >> 1;
+			clipRect.y = (screen_surface->h - clipRect.h * scalingFactor) >> 1;
+		}
+	}
+}
+
+int Screen::xToClipRect(int x) {
+	return (x - Screen::getInstance()->getOffsetX()) / Screen::getInstance()->getScalingFactor();
+}
+
+int Screen::yToClipRect(int y) {
+	return (y - Screen::getInstance()->getOffsetY()) / Screen::getInstance()->getScalingFactor();
 }

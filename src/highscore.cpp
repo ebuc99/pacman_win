@@ -326,7 +326,7 @@ void HighscoreList::draw(bool nameAlterable, bool highlightLast) {
 		Screen::getInstance()->draw(sfReadonly, (Constants::WINDOW_WIDTH-sfReadonly->w)>>1, (Constants::WINDOW_HEIGHT-sfReadonly->h)>>1);
 	if (!nameAlterable)
 		Screen::getInstance()->draw(sfBackItem, (Constants::WINDOW_WIDTH-sfBackItem->w)>>1, 430);
-	Screen::getInstance()->addTotalUpdateRect();
+	Screen::getInstance()->addUpdateClipRect();
 	Screen::getInstance()->Refresh();
 }
 
@@ -498,7 +498,9 @@ bool HighscoreList::eventloop(bool nameAlterable, bool *redrawNeeded) {
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 			if (event.button.button == SDL_BUTTON_LEFT && !nameAlterable) {
-				if ((Constants::WINDOW_WIDTH-sfBackItem->w)>>1 <= event.motion.x && event.motion.x <= (Constants::WINDOW_WIDTH+sfBackItem->w)>>1 && 430 <= event.motion.y && event.motion.y <= 430+sfBackItem->h) {
+				int event_x = Screen::xToClipRect(event.motion.x);
+				int event_y = Screen::yToClipRect(event.motion.y);
+				if ((Constants::WINDOW_WIDTH-sfBackItem->w)>>1 <= event_x && event_x <= (Constants::WINDOW_WIDTH+sfBackItem->w)>>1 && 430 <= event_y && event_y <= 430+sfBackItem->h) {
 					return false;
 				}
 			}
@@ -511,6 +513,7 @@ bool HighscoreList::eventloop(bool nameAlterable, bool *redrawNeeded) {
 		}
 	}
 	if (refreshWindow) {
+		Screen::getInstance()->clearOutsideClipRect();
 		Screen::getInstance()->addTotalUpdateRect();
 		Screen::getInstance()->Refresh();
 	}
