@@ -1,4 +1,6 @@
 #include "highscore.h"
+#include <sstream>
+using namespace std;
 
 HighscoreEntry::HighscoreEntry(std::string playerName, int score, int level) {
 	this->playerName = std::string(playerName);
@@ -213,7 +215,7 @@ void HighscoreList::draw(bool nameAlterable, bool highlightLast) {
 		sfCaret = Screen::getTextSurface(Screen::getVeryLargeFont(), "-", Constants::YELLOW_COLOR);
 	if (readonly && !sfReadonly)
 		sfReadonly = Screen::getTextSurface(Screen::getFont(), "Highscore file could not be read!", Constants::RED_COLOR);
-	char ch_array[8];
+	ostringstream ostr_highscore;
 	if (idxLastInsertedEntry < 0 || !highlightLast) {
 		idxHighlightedEntry = -1;
 	} else {
@@ -221,16 +223,18 @@ void HighscoreList::draw(bool nameAlterable, bool highlightLast) {
 			idxHighlightedEntry = idxLastInsertedEntry;
 			if (sfCurrentPos)
 				SDL_FreeSurface(sfCurrentPos);
-			sprintf(ch_array, "%d.", idxHighlightedEntry+1);
-			sfCurrentPos = Screen::getTextSurface(Screen::getFont(), ch_array, Constants::YELLOW_COLOR);
+			ostr_highscore << idxHighlightedEntry+1 << ".";
+			sfCurrentPos = Screen::getTextSurface(Screen::getFont(), ostr_highscore.str().c_str(), Constants::YELLOW_COLOR);
 			if (sfCurrentScore)
 				SDL_FreeSurface(sfCurrentScore);
-			sprintf(ch_array, "%d", entries->at(idxHighlightedEntry)->getScore());
-			sfCurrentScore = Screen::getTextSurface(Screen::getFont(), ch_array, Constants::YELLOW_COLOR);
+			ostr_highscore.str("");
+			ostr_highscore << entries->at(idxHighlightedEntry)->getScore();
+			sfCurrentScore = Screen::getTextSurface(Screen::getFont(), ostr_highscore.str().c_str(), Constants::YELLOW_COLOR);
 			if (sfCurrentLevel)
 				SDL_FreeSurface(sfCurrentLevel);
-			sprintf(ch_array, "%d", entries->at(idxHighlightedEntry)->getLevel());
-			sfCurrentLevel = Screen::getTextSurface(Screen::getFont(), ch_array, Constants::YELLOW_COLOR);
+			ostr_highscore.str("");
+			ostr_highscore << entries->at(idxHighlightedEntry)->getLevel();
+			sfCurrentLevel = Screen::getTextSurface(Screen::getFont(), ostr_highscore.str().c_str(), Constants::YELLOW_COLOR);
 		}
 		if (sfCurrentName)
 			SDL_FreeSurface(sfCurrentName);
@@ -254,19 +258,22 @@ void HighscoreList::draw(bool nameAlterable, bool highlightLast) {
 	int i = 0;
 	for (std::vector<HighscoreEntry*>::iterator it = entries->begin(); it != entries->end(); ++it) {
 		if (!sfPositions[i]) {
-			sprintf(ch_array, "%d.", i+1);
-			sfPositions[i] = Screen::getTextSurface(Screen::getFont(), ch_array, Constants::GRAY_COLOR);
+			ostr_highscore.str("");
+			ostr_highscore << i+1 << ".";
+			sfPositions[i] = Screen::getTextSurface(Screen::getFont(), ostr_highscore.str().c_str(), Constants::GRAY_COLOR);
 		}
 		if (!sfPlayerNames[i] && (*it)->getPlayerNameLength()) {
 			sfPlayerNames[i] = Screen::getTextSurface(Screen::getFont(), (*it)->getPlayerName(), Constants::GRAY_COLOR);
 		}
 		if (!sfScores[i]) {
-			sprintf(ch_array, "%d", (*it)->getScore());
-			sfScores[i] = Screen::getTextSurface(Screen::getFont(), ch_array, Constants::GRAY_COLOR);
+			ostr_highscore.str("");
+			ostr_highscore << (*it)->getScore();
+			sfScores[i] = Screen::getTextSurface(Screen::getFont(), ostr_highscore.str().c_str(), Constants::GRAY_COLOR);
 		}
 		if (!sfLevels[i]) {
-			sprintf(ch_array, "%d", (*it)->getLevel());
-			sfLevels[i] = Screen::getTextSurface(Screen::getFont(), ch_array, Constants::GRAY_COLOR);
+			ostr_highscore.str("");
+			ostr_highscore << (*it)->getLevel();
+			sfLevels[i] = Screen::getTextSurface(Screen::getFont(), ostr_highscore.str().c_str(), Constants::GRAY_COLOR);
 		}
 		if (sfPositions[i]->w > maxWidthPosition)
 			maxWidthPosition = sfPositions[i]->w;
@@ -538,6 +545,26 @@ void HighscoreList::show(bool nameAlterable, bool highlightLast) {
 	}
 }
 
+void HighscoreList::resetHighlightedEntry() {
+	idxHighlightedEntry = -1;
+	if (sfCurrentPos) {
+		SDL_FreeSurface(sfCurrentPos);
+		sfCurrentPos = NULL;
+	}
+	if (sfCurrentName) {
+		SDL_FreeSurface(sfCurrentName);
+		sfCurrentName = NULL;
+	}
+	if (sfCurrentScore) {
+		SDL_FreeSurface(sfCurrentScore);
+		sfCurrentScore = NULL;
+	}
+	if (sfCurrentLevel) {
+		SDL_FreeSurface(sfCurrentLevel);
+		sfCurrentLevel = NULL;
+	}
+}
+
 bool HighscoreList::readEncryptedLine(std::ifstream &f, std::string &line) {
 	line.clear();
 	if (f.eof()) {
@@ -564,6 +591,11 @@ bool HighscoreList::readEncryptedLine(std::ifstream &f, std::string &line) {
 		}
 		return (line.length() > 0);
 	}
+}
+
+bool HighscoreList::readLine(std::ifstream &f, std::string &line) {
+    std::getline(f, line);
+    return (line.length() > 0);
 }
 
 void HighscoreList::load() {
@@ -598,7 +630,7 @@ void HighscoreList::load() {
 		if (f.is_open()) {
 			std::string line;
 			uint8_t linesRead = 0, validLines = 0;
-			while (fileIsEncrypted ? readEncryptedLine(f, line) : std::getline(f, line)) {
+			while (fileIsEncrypted ? readEncryptedLine(f, line) : readLine(f, line)) {
 				if (line.length() >= 1) {
 					++linesRead;
 					std::string::size_type pos = line.find('|');
@@ -648,11 +680,12 @@ void HighscoreList::save() {
 				nextKeyPosition = 0;
 				for (std::vector<HighscoreEntry*>::iterator it = entries->begin(); it != entries->end(); ++it) {
 					std::string line = std::string((*it)->getPlayerName()) + "|";
-					char c_val[10];
-					sprintf(c_val, "%d|", (*it)->getScore());
-					line += c_val;
-					sprintf(c_val, "%d\n", (*it)->getLevel());
-					line += c_val;
+					ostringstream ostr_val;
+					ostr_val << (*it)->getScore() << "|";
+					line += ostr_val.str().c_str();
+					ostr_val.str("");
+					ostr_val << (*it)->getLevel() << endl;
+					line += ostr_val.str().c_str();
 					std::string encryptedLine = "";
 					for (std::string::size_type i = 0; i < line.length(); ++i) {
 						char c = line[i] ^ rawEncryptionKey[nextKeyPosition];
