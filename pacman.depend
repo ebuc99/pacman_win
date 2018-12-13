@@ -1,0 +1,585 @@
+# depslib dependency file v1.0
+1544353926 source:c:\temp\cpp\pacman_win\src\cmdline_options.cpp
+	"cmdline_options.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\cmdline_options.h
+	<string>
+
+1544353926 source:c:\temp\cpp\pacman_win\src\constants.cpp
+	"constants.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\constants.h
+	<SDL2/SDL.h>
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl.h
+	"SDL_main.h"
+	"SDL_stdinc.h"
+	"SDL_assert.h"
+	"SDL_atomic.h"
+	"SDL_audio.h"
+	"SDL_clipboard.h"
+	"SDL_cpuinfo.h"
+	"SDL_endian.h"
+	"SDL_error.h"
+	"SDL_events.h"
+	"SDL_filesystem.h"
+	"SDL_joystick.h"
+	"SDL_gamecontroller.h"
+	"SDL_haptic.h"
+	"SDL_hints.h"
+	"SDL_loadso.h"
+	"SDL_log.h"
+	"SDL_messagebox.h"
+	"SDL_mutex.h"
+	"SDL_power.h"
+	"SDL_render.h"
+	"SDL_rwops.h"
+	"SDL_system.h"
+	"SDL_thread.h"
+	"SDL_timer.h"
+	"SDL_version.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_main.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_stdinc.h
+	"SDL_config.h"
+	<sys/types.h>
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<stdarg.h>
+	<stdlib.h>
+	<malloc.h>
+	<stddef.h>
+	<stdarg.h>
+	<memory.h>
+	<string.h>
+	<strings.h>
+	<inttypes.h>
+	<stdint.h>
+	<ctype.h>
+	<math.h>
+	<float.h>
+	<sal.h>
+	"begin_code.h"
+	<alloca.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_config.h
+	"SDL_platform.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_platform.h
+	"AvailabilityMacros.h"
+	"TargetConditionals.h"
+	<winapifamily.h>
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\begin_code.h
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\close_code.h
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_assert.h
+	"SDL_config.h"
+	"begin_code.h"
+	<signal.h>
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_atomic.h
+	"SDL_stdinc.h"
+	"SDL_platform.h"
+	"begin_code.h"
+	<mbarrier.h>
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_audio.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_endian.h"
+	"SDL_mutex.h"
+	"SDL_thread.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_error.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_endian.h
+	"SDL_stdinc.h"
+	<endian.h>
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_mutex.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_thread.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_atomic.h"
+	"SDL_mutex.h"
+	"begin_code.h"
+	<process.h>
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_rwops.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_clipboard.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_cpuinfo.h
+	"SDL_stdinc.h"
+	<intrin.h>
+	<intrin.h>
+	<altivec.h>
+	<mmintrin.h>
+	<mm3dnow.h>
+	<xmmintrin.h>
+	<emmintrin.h>
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_events.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"SDL_keyboard.h"
+	"SDL_mouse.h"
+	"SDL_joystick.h"
+	"SDL_gamecontroller.h"
+	"SDL_quit.h"
+	"SDL_gesture.h"
+	"SDL_touch.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_video.h
+	"SDL_stdinc.h"
+	"SDL_pixels.h"
+	"SDL_rect.h"
+	"SDL_surface.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_pixels.h
+	"SDL_stdinc.h"
+	"SDL_endian.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_rect.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_pixels.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_surface.h
+	"SDL_stdinc.h"
+	"SDL_pixels.h"
+	"SDL_rect.h"
+	"SDL_blendmode.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_blendmode.h
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_keyboard.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_keycode.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_keycode.h
+	"SDL_stdinc.h"
+	"SDL_scancode.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_scancode.h
+	"SDL_stdinc.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_mouse.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_joystick.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_gamecontroller.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_rwops.h"
+	"SDL_joystick.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_quit.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_gesture.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"SDL_touch.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_touch.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_filesystem.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_haptic.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_joystick.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_hints.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_loadso.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_log.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_messagebox.h
+	"SDL_stdinc.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_power.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_render.h
+	"SDL_stdinc.h"
+	"SDL_rect.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_system.h
+	"SDL_stdinc.h"
+	"SDL_keyboard.h"
+	"SDL_render.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1476935894 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_version.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1544353926 source:c:\temp\cpp\pacman_win\src\figur.cpp
+	"figur.h"
+	"math.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\figur.h
+	<SDL2/SDL.h>
+	<SDL2/SDL_image.h>
+	"platform.h"
+
+1376159942 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_image.h
+	"SDL.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\platform.h
+	<string.h>
+	<stdlib.h>
+	<errno.h>
+	<direct.h>
+	<io.h>
+	<sys/stat.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<sys/types.h>
+	<unistd.h>
+	<iostream>
+
+1544353926 source:c:\temp\cpp\pacman_win\src\funny_animation.cpp
+	"funny_animation.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\funny_animation.h
+	"screen.h"
+	"pacman_figur.h"
+	"ghost_figur.h"
+	"labyrinth.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\screen.h
+	<SDL2/SDL.h>
+	<SDL2/SDL_image.h>
+	<SDL2/SDL_ttf.h>
+	<iostream>
+	"cmdline_options.h"
+	"constants.h"
+	"platform.h"
+
+1376160142 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_ttf.h
+	"SDL.h"
+	"begin_code.h"
+	"close_code.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\pacman_figur.h
+	"constants.h"
+	"labyrinth.h"
+	"figur.h"
+	"rail.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\labyrinth.h
+	<SDL2/SDL_ttf.h>
+	<vector>
+	"constants.h"
+	"screen.h"
+	"pille.h"
+	"rail.h"
+	"sounds.h"
+	"platform.h"
+	"ghost_figur.h"
+	"pacman_figur.h"
+	"labyrinth_observer.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\pille.h
+
+1544353926 c:\temp\cpp\pacman_win\src\rail.h
+
+1544353926 c:\temp\cpp\pacman_win\src\sounds.h
+	<SDL2/SDL.h>
+	<SDL2/SDL_mixer.h>
+	<iostream>
+	"cmdline_options.h"
+	"platform.h"
+	"labyrinth_observer.h"
+
+1376160024 c:\temp\cpp\sdl2-2.0.5\i686-w64-mingw32\include\sdl2\sdl_mixer.h
+	"SDL_stdinc.h"
+	"SDL_rwops.h"
+	"SDL_audio.h"
+	"SDL_endian.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\labyrinth_observer.h
+
+1544353926 c:\temp\cpp\pacman_win\src\ghost_figur.h
+	"constants.h"
+	"game.h"
+	"labyrinth.h"
+	"figur.h"
+	"pacman_figur.h"
+	"rail.h"
+	<time.h>
+	"labyrinth_observer.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\game.h
+	<SDL2/SDL.h>
+	<SDL2/SDL_ttf.h>
+	<SDL2/SDL_gamecontroller.h>
+	"constants.h"
+	"pacman_figur.h"
+	"ghost_figur.h"
+	"highscore.h"
+	"gamecontroller.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\highscore.h
+	"constants.h"
+	<string>
+	<vector>
+	<iostream>
+	<fstream>
+	<SDL2/SDL.h>
+	<SDL2/SDL_gamecontroller.h>
+	"screen.h"
+	"sounds.h"
+	"platform.h"
+	<stdlib.h>
+
+1544353926 source:c:\temp\cpp\pacman_win\src\game.cpp
+	"game.h"
+	"level.h"
+	<iostream>
+
+1544353926 c:\temp\cpp\pacman_win\src\level.h
+
+1544353926 source:c:\temp\cpp\pacman_win\src\ghost_figur.cpp
+	"ghost_figur.h"
+	"game.h"
+	<stdlib.h>
+
+1544353926 source:c:\temp\cpp\pacman_win\src\highscore.cpp
+	"highscore.h"
+	<sstream>
+
+1544353926 source:c:\temp\cpp\pacman_win\src\labyrinth.cpp
+	"labyrinth.h"
+	"game.h"
+	<sstream>
+	"level.h"
+
+1544353926 source:c:\temp\cpp\pacman_win\src\level.cpp
+	"level.h"
+	<iostream>
+
+1544353926 source:c:\temp\cpp\pacman_win\src\menu.cpp
+	"menu.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\menu.h
+	"platform.h"
+	<SDL2/SDL_ttf.h>
+	<SDL2/SDL_gamecontroller.h>
+	<vector>
+	"menu_item.h"
+	"sounds.h"
+	"constants.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\menu_item.h
+	<SDL2/SDL.h>
+	<SDL2/SDL_ttf.h>
+	"platform.h"
+	"constants.h"
+	"screen.h"
+
+1544353926 source:c:\temp\cpp\pacman_win\src\menu_about.cpp
+	"menu_about.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\menu_about.h
+	"menu.h"
+
+1544353926 source:c:\temp\cpp\pacman_win\src\menu_item.cpp
+	"menu_item.h"
+
+1544353926 source:c:\temp\cpp\pacman_win\src\menu_main.cpp
+	"menu_main.h"
+	"config.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\menu_main.h
+	"pacman_figur.h"
+	"ghost_figur.h"
+	"menu_options.h"
+	"menu_about.h"
+	"funny_animation.h"
+	"highscore.h"
+	"gamecontroller.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\menu_options.h
+	"sounds.h"
+	"menu.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\config.h
+
+1544353926 source:c:\temp\cpp\pacman_win\src\menu_options.cpp
+	"menu_options.h"
+
+1544353926 source:c:\temp\cpp\pacman_win\src\pacman.cpp
+	"pacman.h"
+	"config.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\pacman.h
+	<iostream>
+	<SDL2/SDL.h>
+	<SDL2/SDL_image.h>
+	<SDL2/SDL_ttf.h>
+	"cmdline_options.h"
+	"constants.h"
+	"game.h"
+	"gamecontroller.h"
+	"screen.h"
+	"sounds.h"
+	"ghost_figur.h"
+	"pacman_figur.h"
+	"menu_main.h"
+	"highscore.h"
+
+1544353926 source:c:\temp\cpp\pacman_win\src\pacman_figur.cpp
+	"pacman_figur.h"
+	"ghost_figur.h"
+	"math.h"
+	<iostream>
+
+1544353926 source:c:\temp\cpp\pacman_win\src\pille.cpp
+	"pille.h"
+
+1544353926 source:c:\temp\cpp\pacman_win\src\platform.cpp
+	"platform.h"
+
+1544353926 source:c:\temp\cpp\pacman_win\src\rail.cpp
+	"rail.h"
+
+1544353926 source:c:\temp\cpp\pacman_win\src\screen.cpp
+	"screen.h"
+
+1544353926 source:c:\temp\cpp\pacman_win\src\sounds.cpp
+	"sounds.h"
+	"labyrinth.h"
+
+1544353926 c:\temp\cpp\pacman_win\src\gamecontroller.h
+	<SDL2/SDL.h>
+	<SDL2/SDL_gamecontroller.h>
+	<iostream>
+	"platform.h"
+
+1544353926 source:c:\temp\cpp\pacman_win\src\gamecontroller.cpp
+	"gamecontroller.h"
+

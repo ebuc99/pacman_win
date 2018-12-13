@@ -3,10 +3,12 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_gamecontroller.h>
 #include "constants.h"
 #include "pacman_figur.h"
 #include "ghost_figur.h"
 #include "highscore.h"
+#include "gamecontroller.h"
 
 class Game {
 	public:
@@ -45,7 +47,7 @@ class Game {
 		int cnt_hunting_mode;
 		void stopHuntingMode();
 
-		void preselectDirection(int keycode);
+		void preselectDirection(int keycode, int value = 0);
 		void togglePause();
 		bool eventloop();
 
