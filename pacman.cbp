@@ -36,6 +36,8 @@
 		<Unit filename="src/funny_animation.h" />
 		<Unit filename="src/game.cpp" />
 		<Unit filename="src/game.h" />
+		<Unit filename="src/gamecontroller.cpp" />
+		<Unit filename="src/gamecontroller.h" />
 		<Unit filename="src/ghost_figur.cpp" />
 		<Unit filename="src/ghost_figur.h" />
 		<Unit filename="src/highscore.cpp" />
